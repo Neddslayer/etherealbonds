@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "dev.neddslayer",
+    "id": "etherealbonds",
+    "version": "${version}",
+    "provides": [
+      {
+        "id": "fabric_asm",
+        "version": "v2.3"
+      }
+    ],
+    "metadata": {
+      "name": "Ethereal Bonds",
+      "description": "Bond with mobs and gain their abilities.",
+      "contributors": {
+        "Neddslayer": "Owner"
+      },
+      "contact": {
+        "homepage": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      "icon": "assets/etherealbonds/icon.png",
+      "license": {
+        "name": "All Rights Reserved",
+        "id": "ARR",
+        "url": "https://en.wikipedia.org/wiki/All_rights_reserved",
+        "description": "All. Rights. Reserved."
+      }
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "entrypoints": {
+      "init": "dev.neddslayer.etherealbonds.EtherealBonds",
+      "client_init": "dev.neddslayer.etherealbonds.EtherealBondsClient"
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "versions": ">=0.17.6-"
+      },
+      {
+        "id": "quilted_fabric_api",
+        "versions": ">=5.0.0-"
+      },
+      {
+        "id": "minecraft",
+        "versions": "1.19"
+      },
+      {
+        "id": "java",
+        "versions": ">=17"
+      },
+      {
+        "id": "trinkets",
+        "versions": "*"
+      }
+    ]
+  },
+  "mixin": [
+    "etherealbonds.mixins.json"
+  ]
+}

@@ -1,0 +1,98 @@
+plugins {
+	id 'maven-publish'
+	alias(libs.plugins.quilt.loom)
+}
+
+archivesBaseName = project.archives_base_name
+version = project.version
+group = project.maven_group
+
+repositories {
+	maven {
+	    url 'https://api.modrinth.com/maven'
+	    content {
+		    includeGroup 'maven.modrinth'
+	    }
+	}
+	maven { url 'https://maven.quiltmc.org/repository/snapshot' }
+	maven { url 'https://maven.terraformersmc.com' }
+	maven { url 'https://ladysnake.jfrog.io/artifactory/mods' }
+	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+	maven { url 'https://jitpack.io' }
+	maven { url "https://maven.shedaniel.me" }
+	mavenCentral()
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/malum.accesswidener")
+}
+
+dependencies {
+	minecraft libs.minecraft
+	mappings "org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:intermediary-v2"
+
+	modImplementation(libs.quilt.loader)
+	modImplementation(libs.quilt.loading.screen)
+	modImplementation(libs.quilted.fabric.api)
+	modImplementation(libs.trinkets) {
+		exclude group: "net.fabricmc"
+		exclude group: "net.fabricmc.fabric-api"
+		exclude group: "com.terraformersmc"
+	}
+	modImplementation 'software.bernie.geckolib:geckolib-quilt-1.19.3:4.0.3'
+	modImplementation(libs.annotations)
+	modImplementation(libs.fabric.asm)
+	modImplementation(libs.isnrmn)
+	modImplementation(libs.emi) { transitive false }
+
+	modRuntimeOnly("maven.modrinth:sodium:mc1.19.3-0.4.6")
+	//modRuntimeOnly("maven.modrinth:iris:1.19.3-v1.4.6")
+
+	//runtimeOnly compileOnly("org.anarres:jcpp:1.4.14") // for iris
+
+	modImplementation include("com.github.Arathain:LodestoneLib-Quilt:1.19.3-SNAPSHOT")
+	include(libs.fabric.asm)
+	include(libs.satin)
+
+	implementation(libs.mixin.extras)
+	include(libs.mixin.extras)
+
+	annotationProcessor(libs.mixin.extras)
+}
+
+processResources {
+	inputs.property "version", version
+
+	filesMatching('quilt.mod.json') {
+		expand "version": version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.options.release = 17
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+	withSourcesJar()
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+
+	}
+}
