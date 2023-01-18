@@ -57,5 +57,6 @@
   },
   "mixin": [
     "etherealbonds.mixins.json"
-  ]
+  ],
+	"access_widener": "etherealbonds.accesswidener"
 }

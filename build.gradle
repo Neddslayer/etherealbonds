@@ -24,7 +24,7 @@ repositories {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/malum.accesswidener")
+	accessWidenerPath = file("src/main/resources/etherealbonds.accesswidener")
 }
 
 dependencies {
