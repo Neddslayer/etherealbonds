@@ -87,8 +87,14 @@ public class StrandedTravelerEntity extends HostileEntity implements GeoEntity {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_ATTACK_DAMAGE);
     }
 
-    private <E extends GeoAnimatable> PlayState findAnimation(@NotNull AnimationState<E> state) {
-        if (state.isMoving() && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
+    private <E extends GeoAnimatable> PlayState controllerPredicate(@NotNull AnimationState<E> state) {
+        if (this.prevX == this.getX() && this.prevY == this.getY() && this.prevZ == this.getZ() && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
+            state.getController().setAnimation(RawAnimation.begin().then("misc.idle2", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        } else if (this.dead || this.getHealth() < 0.01 || this.isDead()) {
+            state.getController().setAnimation(RawAnimation.begin().then("misc.death", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            return PlayState.CONTINUE;
+        } else {
             if (this.getHasTarget()) {
                 state.getController().setAnimation(RawAnimation.begin().then("walk.target", Animation.LoopType.LOOP));
                 return PlayState.CONTINUE;
@@ -96,18 +102,13 @@ public class StrandedTravelerEntity extends HostileEntity implements GeoEntity {
                 state.getController().setAnimation(RawAnimation.begin().then("walk.wander", Animation.LoopType.LOOP));
                 return PlayState.CONTINUE;
             }
-        } else if (this.dead || this.getHealth() < 0.01 || this.isDead()) {
-            state.getController().setAnimation(RawAnimation.begin().then("misc.death", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            return PlayState.CONTINUE;
         }
-        state.getController().setAnimation(RawAnimation.begin().then("misc.idle2", Animation.LoopType.LOOP));
-        return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(
-            new AnimationController<>(this, "controller", 5, this::findAnimation)
+            new AnimationController<>(this, "controller", 5, this::controllerPredicate)
         );
     }
 
