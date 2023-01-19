@@ -1,12 +1,19 @@
 package dev.neddslayer.etherealbonds.entity;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.AboveGroundTargeting;
+import net.minecraft.entity.ai.NoPenaltySolidTargeting;
 import net.minecraft.entity.ai.NoWaterTargeting;
+import net.minecraft.entity.ai.control.FlightMoveControl;
+import net.minecraft.entity.ai.control.LookControl;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
@@ -28,6 +35,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -46,17 +54,21 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
 
     public WaspEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
+        this.moveControl = new FlightMoveControl(this, 20, true);
+        this.lookControl = new LookControl(this);
     }
 
     public static DefaultAttributeContainer.Builder createWaspAttributes() {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0)
-            .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.6000000238418579)
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896)
+            .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.75000000119209289)
+            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.53000001192092896)
             .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0);
     }
 
     protected void initGoals() {
         this.goalSelector.add(0, new WaspAttackGoal(this, 1.399999976158142, true));
+        this.goalSelector.add(8, new WaspWanderGoal(this));
+        this.targetSelector.add(2, new TargetGoal<>(this, PlayerEntity.class, true));
     }
 
     protected void initDataTracker() {
@@ -100,7 +112,11 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
     protected EntityNavigation createNavigation(World world) {
         BirdNavigation birdNavigation = new BirdNavigation(this, world) {
             public boolean isValidPosition(BlockPos pos) {
-                return !this.world.getBlockState(pos.down()).isAir();
+                return !this.world.getBlockState(pos.down(4)).isAir();
+            }
+            @Nullable
+            public Path findPathTo(Entity entity, int distance) {
+                return this.findPathTo(ImmutableSet.of(entity.getBlockPos().add(0, entity.getHeight(), 0)), 16, true, distance);
             }
         };
         birdNavigation.setCanPathThroughDoors(false);
@@ -171,21 +187,19 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
                 boolean inLineOfSight = this.entity.getVisibilityCache().canSee(livingentity);
                 this.attackTime++;
                 this.entity.lookAtEntity(livingentity, 30.0F, 30.0F);
-                final Box aabb2 = new Box(this.entity.getBlockPos()).expand(1.25D);
+                final Box aabb2 = new Box(this.entity.getBlockPos()).expand(2D);
                 if (inLineOfSight) {
                     this.entity.getNavigation().startMovingTo(livingentity, this.speed);
                     if (this.attackTime == 1) {
-                        if (this.entity.m_bvsfgiaw(livingentity) <= this.getSquaredMaxAttackDistance(livingentity)){
+                        if (this.entity.squaredDistanceTo(livingentity) <= 0.5){
                             this.entity.setState(1);
                         }
                     }
                     if (this.attackTime == 4) {
+                        double d = this.entity.m_bvsfgiaw(livingentity);
                         this.entity.getCommandSenderWorld().getOtherEntities(this.entity, aabb2).forEach(e -> {
-                            if ((e instanceof LivingEntity l)) {
-                                if (this.entity.m_bvsfgiaw(l) <= this.getSquaredMaxAttackDistance(l)){
-                                    this.entity.tryAttack(livingentity);
-                                    livingentity.timeUntilRegen = 0;
-                                }
+                            if ((e instanceof LivingEntity)) {
+                                this.attack(livingentity, d);
                             }
                         });
                     }
@@ -196,9 +210,52 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
                 }
             }
         }
+
+        protected void attack(LivingEntity target, double squaredDistance) {
+            double d = this.getSquaredMaxAttackDistance(target);
+            if (squaredDistance <= d) {
+                this.entity.swingHand(Hand.MAIN_HAND);
+                this.entity.tryAttack(target);
+            }
+
+        }
+
+
         protected double getSquaredMaxAttackDistance(LivingEntity entity) {
-            return (double)(this.entity.getWidth() * 2.0F * this.entity.getWidth() * 2.0F + entity.getWidth());
+            return (double)(this.entity.getWidth() * 3.0F * this.entity.getWidth() * 3.0F + entity.getWidth());
         }
     }
+    class WaspWanderGoal extends Goal {
+        private final WaspEntity entity;
 
+        WaspWanderGoal(WaspEntity entity) {
+            this.entity = entity;
+            this.setControls(EnumSet.of(Control.MOVE));
+        }
+
+        public boolean canStart() {
+            return this.entity.navigation.isIdle() && this.entity.random.nextInt(10) == 0;
+        }
+
+        public boolean shouldContinue() {
+            return this.entity.navigation.isFollowingPath();
+        }
+
+        public void start() {
+            Vec3d vec3d = this.getRandomLocation();
+            if (vec3d != null) {
+                this.entity.navigation.startMovingAlong(this.entity.navigation.findPathTo(new BlockPos(vec3d), 1), 1.0);
+            }
+
+        }
+
+        @Nullable
+        private Vec3d getRandomLocation() {
+            Vec3d vec3d2;
+            vec3d2 = this.entity.getRotationVec(0.0F);
+
+            Vec3d vec3d3 = AboveGroundTargeting.find(this.entity, 8, 7, vec3d2.x, vec3d2.z, 1.5707964F, 3, 1);
+            return vec3d3 != null ? vec3d3 : NoPenaltySolidTargeting.find(this.entity, 8, 4, -2, vec3d2.x, vec3d2.z, 1.5707963705062866);
+        }
+    }
 }

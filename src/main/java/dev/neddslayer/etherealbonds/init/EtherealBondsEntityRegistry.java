@@ -37,7 +37,7 @@ public class EtherealBondsEntityRegistry {
         WASP = Registry.register(Registries.ENTITY_TYPE,
             new Identifier(MODID, "wasp"),
             QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, WaspEntity::new)
-                .setDimensions(EntityDimensions.fixed(0.1F, 0.1F)).maxBlockTrackingRange(20).trackingTickInterval(1).alwaysUpdateVelocity(true)
+                .setDimensions(EntityDimensions.fixed(0.1F, 0.1F)).maxBlockTrackingRange(256).maxChunkTrackingRange(20).trackingTickInterval(1).alwaysUpdateVelocity(true)
                 .build());
         FabricDefaultAttributeRegistry.register(STRANDED_TRAVELER, StrandedTravelerEntity.createHostileAttributes());
         FabricDefaultAttributeRegistry.register(WASP, WaspEntity.createWaspAttributes());
