@@ -1,0 +1,42 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Wasp",
+					"pivot": [0, 1.4, 0.2],
+					"cubes": [
+						{"origin": [0, -0.6, 2.5], "size": [0, 1, 1], "pivot": [-1, -1.1, 1], "rotation": [45, 0, 0], "uv": [0, 0]},
+						{"origin": [-0.5, 0.5, -2], "size": [1, 1, 2], "pivot": [-0.5, -1, 1], "rotation": [10, 0, 0], "uv": [7, 0]},
+						{"origin": [-1, 0, -1], "size": [2, 2, 3], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "WingL",
+					"parent": "Wasp",
+					"pivot": [0, 1.4, 0.2],
+					"cubes": [
+						{"origin": [1, 0.09436, -0.44673], "size": [0, 4, 2], "pivot": [0.95, 1, 0.5], "rotation": [-180, -2.07556, -130.99197], "uv": [4, 3]}
+					]
+				},
+				{
+					"name": "WingR",
+					"parent": "Wasp",
+					"pivot": [0, 1.4, 0.2],
+					"cubes": [
+						{"origin": [-1, 0.09436, -0.44673], "size": [0, 4, 2], "pivot": [-1.05, 1, 0.5], "rotation": [0, 2.07556, -49.00803], "uv": [0, 3]}
+					]
+				}
+			]
+		}
+	]
+}
