@@ -1,6 +1,8 @@
 package dev.neddslayer.etherealbonds.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.NoWaterTargeting;
 import net.minecraft.entity.ai.goal.Goal;
@@ -10,6 +12,7 @@ import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -34,7 +37,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 
-public class WaspEntity extends HostileEntity implements GeoEntity {
+public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
 
     public static final TrackedData<Integer> STATE = DataTracker.registerData(WaspEntity.class,
         TrackedDataHandlerRegistry.INTEGER);
@@ -59,6 +62,13 @@ public class WaspEntity extends HostileEntity implements GeoEntity {
     protected void initDataTracker() {
         super.initDataTracker();
         this.getDataTracker().startTracking(STATE, 0);
+    }
+
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        return false;
+    }
+
+    protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 
     void startMovingTo(BlockPos pos) {
@@ -115,6 +125,11 @@ public class WaspEntity extends HostileEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    @Override
+    public boolean isInAir() {
+        return !this.onGround;
     }
 
     class WaspAttackGoal extends Goal {
