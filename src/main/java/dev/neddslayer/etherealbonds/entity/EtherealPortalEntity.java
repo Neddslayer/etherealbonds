@@ -1,5 +1,6 @@
 package dev.neddslayer.etherealbonds.entity;
 
+import dev.neddslayer.etherealbonds.init.EtherealBondsWorldRegistry;
 import eu.midnightdust.lib.config.MidnightConfig;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -9,7 +10,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.HolderLookup;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -74,16 +79,26 @@ public class EtherealPortalEntity extends Entity implements GeoEntity {
 
 
     @Override
-    public void baseTick() {
+    public void tick() {
         if (this.invalid) {
             this.discard();
             return;
         }
 
-        super.baseTick();
+        super.tick();
 
-        if (!this.world.isClient) {
+        if (this.world instanceof ServerWorld) {
 
+            ServerPlayerEntity p = (ServerPlayerEntity) this.world.getClosestPlayer(this, 1);
+            if (p != null) {
+                ServerWorld serverWorld = (ServerWorld) this.world;
+                MinecraftServer minecraftServer = serverWorld.getServer();
+                RegistryKey<World> registryKey = this.world.getRegistryKey() == EtherealBondsWorldRegistry.ETHEREAL_PLANE ? World.OVERWORLD : EtherealBondsWorldRegistry.ETHEREAL_PLANE;
+                ServerWorld serverWorld2 = minecraftServer.getWorld(registryKey);
+                if (serverWorld2 != null && !p.hasVehicle() && p.world.getRegistryKey() != registryKey) {
+                    p.moveToWorld(serverWorld2);
+                }
+            }
             if (!isMidnightDimension(this.world)) {
                 this.updateOverworldBehavior();
             }
@@ -92,11 +107,7 @@ public class EtherealPortalEntity extends Entity implements GeoEntity {
     }
 
     private void updateOverworldBehavior() {
-        if (this.world.isDay() || this.world.getLightLevel(LightType.BLOCK, this.getBlockPos()) > 5) {
-            this.shouldBeUnstable = true;
-        } else {
-            this.shouldBeUnstable = false;
-        }
+        this.shouldBeUnstable = this.world.isDay() || this.world.getLightLevel(LightType.BLOCK, this.getBlockPos()) > 5;
 
         if (this.isUnstable()) {
             this.pullEntities();
@@ -104,7 +115,6 @@ public class EtherealPortalEntity extends Entity implements GeoEntity {
     }
 
     private void pullEntities() {
-
         Box pullBounds = this.getBoundingBox().expand(20.0F);
         List<Entity> entities = this.world.getEntitiesByClass(Entity.class, pullBounds, EntityPredicates.EXCEPT_SPECTATOR);
         for (Entity entity : entities) {
