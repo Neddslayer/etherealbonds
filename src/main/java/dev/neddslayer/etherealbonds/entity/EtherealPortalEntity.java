@@ -3,6 +3,8 @@ package dev.neddslayer.etherealbonds.entity;
 import dev.neddslayer.etherealbonds.init.EtherealBondsWorldRegistry;
 import eu.midnightdust.lib.config.MidnightConfig;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,18 +17,18 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.*;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.border.WorldBorder;
+import net.minecraft.world.dimension.AreaHelper;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import org.joml.Vector3d;
+import org.quiltmc.qsl.worldgen.dimension.api.QuiltDimensions;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -77,7 +79,6 @@ public class EtherealPortalEntity extends Entity implements GeoEntity {
 
     }
 
-
     @Override
     public void tick() {
         if (this.invalid) {
@@ -87,16 +88,16 @@ public class EtherealPortalEntity extends Entity implements GeoEntity {
 
         super.tick();
 
-        if (this.world instanceof ServerWorld) {
+        if (this.world instanceof ServerWorld s) {
 
-            ServerPlayerEntity p = (ServerPlayerEntity) this.world.getClosestPlayer(this, 1);
+            PlayerEntity p = this.world.getClosestPlayer(this, 1.5);
             if (p != null) {
-                ServerWorld serverWorld = (ServerWorld) this.world;
-                MinecraftServer minecraftServer = serverWorld.getServer();
-                RegistryKey<World> registryKey = this.world.getRegistryKey() == EtherealBondsWorldRegistry.ETHEREAL_PLANE ? World.OVERWORLD : EtherealBondsWorldRegistry.ETHEREAL_PLANE;
-                ServerWorld serverWorld2 = minecraftServer.getWorld(registryKey);
-                if (serverWorld2 != null && !p.hasVehicle() && p.world.getRegistryKey() != registryKey) {
-                    p.moveToWorld(serverWorld2);
+                MinecraftServer minecraftServer = s.getServer();
+                RegistryKey<World> registryKey = EtherealBondsWorldRegistry.ETHEREAL_PLANE;
+                ServerWorld serverWorld = minecraftServer.getWorld(registryKey);
+                if (serverWorld != null && !p.hasVehicle()) {
+                    ((ServerPlayerEntity)p).teleport(serverWorld, this.getX(), this.getY(), this.getZ(), 0, 0);
+                    //QuiltDimensions.teleport(p, serverWorld, null);
                 }
             }
             if (!isMidnightDimension(this.world)) {

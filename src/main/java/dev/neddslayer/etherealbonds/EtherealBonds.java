@@ -3,10 +3,21 @@ package dev.neddslayer.etherealbonds;
 import dev.neddslayer.etherealbonds.init.EtherealBondsEntityRegistry;
 import dev.neddslayer.etherealbonds.init.EtherealBondsItemRegistry;
 import dev.neddslayer.etherealbonds.init.EtherealBondsWorldRegistry;
+import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+import net.minecraft.entity.Entity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
+import org.quiltmc.qsl.lifecycle.api.event.ServerLifecycleEvents;
+import org.quiltmc.qsl.worldgen.dimension.api.QuiltDimensions;
+
+import static net.minecraft.entity.EntityType.COW;
+import static net.minecraft.entity.EntityType.PLAYER;
 
 public class EtherealBonds implements ModInitializer {
 
@@ -18,5 +29,29 @@ public class EtherealBonds implements ModInitializer {
         EtherealBondsItemRegistry.init();
         EtherealBondsEntityRegistry.init();
         EtherealBondsWorldRegistry.init();
+
+        ServerLifecycleEvents.READY.register(server -> {
+            ServerWorld overworld = server.getWorld(World.OVERWORLD);
+            ServerWorld world = server.getWorld(EtherealBondsWorldRegistry.ETHEREAL_PLANE);
+
+            LOGGER.info("Running entity test!");
+
+            if (world == null) throw new AssertionError("Test world doesn't exist.");
+
+            Entity entity = COW.create(overworld);
+
+            if (entity == null) throw new AssertionError("Could not create entity!");
+            if (!entity.world.getRegistryKey().equals(World.OVERWORLD)) throw new AssertionError("Entity starting world isn't the overworld");
+
+            TeleportTarget target = new TeleportTarget(Vec3d.ZERO, new Vec3d(1, 1, 1), 45f, 60f);
+
+            Entity teleported = QuiltDimensions.teleport(entity, world, target);
+
+            if (teleported == null) throw new AssertionError("Entity didn't teleport");
+
+            if (!teleported.world.getRegistryKey().equals(EtherealBondsWorldRegistry.ETHEREAL_PLANE)) throw new AssertionError("Target world not reached.");
+
+            if (!teleported.getPos().equals(target.position)) throw new AssertionError("Target Position not reached.");
+        });
     }
 }
