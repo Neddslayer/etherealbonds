@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 
 public class StrandedTravelerAttackGoal extends Goal {
@@ -56,10 +57,10 @@ public class StrandedTravelerAttackGoal extends Goal {
                     this.entity.setAttackingState(statecheck);
                 }
                 if (this.attackTime == 4) {
+                    double d = this.entity.m_bvsfgiaw(livingentity);
                     this.entity.getCommandSenderWorld().getOtherEntities(this.entity, aabb2).forEach(e -> {
-                        if ((e instanceof LivingEntity) && this.entity.squaredAttackRange((LivingEntity) e) <= 3) {
-                            this.entity.tryAttack(livingentity);
-                            livingentity.timeUntilRegen = 0;
+                        if ((e instanceof LivingEntity)) {
+                            this.attack(livingentity, d);
                         }
                     });
                 }
@@ -69,5 +70,18 @@ public class StrandedTravelerAttackGoal extends Goal {
                 }
             }
         }
+    }
+    protected void attack(LivingEntity target, double squaredDistance) {
+        double d = this.getSquaredMaxAttackDistance(target);
+        if (squaredDistance <= d) {
+            this.entity.swingHand(Hand.MAIN_HAND);
+            this.entity.tryAttack(target);
+        }
+
+    }
+
+
+    protected double getSquaredMaxAttackDistance(LivingEntity entity) {
+        return (double)(this.entity.getWidth() * 3.0F * this.entity.getWidth() * 3.0F + entity.getWidth());
     }
 }

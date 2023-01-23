@@ -2,8 +2,7 @@
   "carvers": {
     "air": [
       "minecraft:cave",
-      "minecraft:cave_extra_underground",
-      "minecraft:canyon"
+      "minecraft:cave_extra_underground"
     ]
   },
   "downfall": 0.4,
@@ -77,6 +76,12 @@
         "weight": 1
       }
       */
+      {
+        "type": "etherealbonds:stranded_traveler",
+        "maxCount": 6,
+        "minCount": 1,
+        "weight": 2
+      }
     ],
     "misc": [],
     "monster": [
@@ -84,7 +89,7 @@
         "type": "etherealbonds:stranded_traveler",
         "maxCount": 6,
         "minCount": 1,
-        "weight": 10
+        "weight": 1
       }
     ],
     "underground_water_creature": [],

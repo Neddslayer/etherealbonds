@@ -148,7 +148,7 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
         return !this.onGround;
     }
 
-    class WaspAttackGoal extends Goal {
+    static class WaspAttackGoal extends Goal {
         protected final WaspEntity entity;
         private final double speed;
         private final boolean pauseWhenMobIdle;

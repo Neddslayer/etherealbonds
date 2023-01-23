@@ -12,7 +12,7 @@
   "infiniburn": "#minecraft:infiniburn_overworld",
   "logical_height": 393,
   "height": 608,
-  "min_y": -32,
+  "min_y": -64,
   "coordinate_scale": 3,
   "ultrawarm": false,
   "has_ceiling": false
