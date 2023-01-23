@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "etherealbonds:block/ethereal_stone"
+      },
+      {
+        "model": "etherealbonds:block/ethereal_stone",
+        "y": 90
+      },
+      {
+        "model": "etherealbonds:block/ethereal_stone",
+        "y": 180
+      },
+      {
+        "model": "etherealbonds:block/ethereal_stone",
+        "y": 270
+      }
+    ]
+  }
+}

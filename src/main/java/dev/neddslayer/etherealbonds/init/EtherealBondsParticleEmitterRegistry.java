@@ -33,7 +33,7 @@ public interface EtherealBondsParticleEmitterRegistry {
     static void init() {
         LOGGER.info("Registering particle emitters...");
         PARTICLE_EMITTERS.forEach((id, pair) -> Registry.register(EtherealBondsParticleEmitterRegistry.PARTICLE_EMITTER, id, pair));
-        LOGGER.info("particle emitter registry completed!");
+        LOGGER.info("Particle emitter registration complete!");
     }
 
 }

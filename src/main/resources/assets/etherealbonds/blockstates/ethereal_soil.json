@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "etherealbonds:block/ethereal_soil"
+      },
+      {
+        "model": "etherealbonds:block/ethereal_soil",
+        "y": 90
+      },
+      {
+        "model": "etherealbonds:block/ethereal_soil",
+        "y": 180
+      },
+      {
+        "model": "etherealbonds:block/ethereal_soil",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -1,11 +1,11 @@
 {
   "type": "etherealbonds:ethereal_plane",
   "generator": {
-    "type": "noise",
+    "type": "minecraft:noise",
     "settings": {
       "aquifers_enabled": false,
       "default_block": {
-        "Name": "minecraft:stone"
+        "Name": "etherealbonds:ethereal_stone"
       },
       "default_fluid": {
         "Name": "minecraft:water",
@@ -50,9 +50,9 @@
                       "argument1": {
                         "type": "minecraft:y_clamped_gradient",
                         "from_value": 0.0,
-                        "from_y": -32,
+                        "from_y": -40,
                         "to_value": 1.0,
-                        "to_y": -40
+                        "to_y": -32
                       },
                       "argument2": {
                         "type": "minecraft:add",
@@ -190,9 +190,9 @@
             "argument1": {
               "type": "minecraft:y_clamped_gradient",
               "from_value": 0.0,
-              "from_y": -32,
+              "from_y": -40,
               "to_value": 1.0,
-              "to_y": -40
+              "to_y": -32
             },
             "argument2": {
               "type": "minecraft:add",
@@ -461,7 +461,7 @@
                                 "then_run": {
                                   "type": "minecraft:block",
                                   "result_state": {
-                                    "Name": "minecraft:coarse_dirt"
+                                    "Name": "etherealbonds:ethereal_soil"
                                   }
                                 }
                               },
@@ -509,7 +509,7 @@
                                     "then_run": {
                                       "type": "minecraft:block",
                                       "result_state": {
-                                        "Name": "minecraft:grass_block",
+                                        "Name": "etherealbonds:ethereal_topsoil",
                                         "Properties": {
                                           "snowy": "false"
                                         }
@@ -519,7 +519,7 @@
                                   {
                                     "type": "minecraft:block",
                                     "result_state": {
-                                      "Name": "minecraft:dirt"
+                                      "Name": "etherealbonds:ethereal_soil"
                                     }
                                   }
                                 ]
@@ -1562,7 +1562,7 @@
                                           "then_run": {
                                             "type": "minecraft:block",
                                             "result_state": {
-                                              "Name": "minecraft:grass_block",
+                                              "Name": "etherealbonds:ethereal_topsoil",
                                               "Properties": {
                                                 "snowy": "false"
                                               }
@@ -1572,7 +1572,7 @@
                                         {
                                           "type": "minecraft:block",
                                           "result_state": {
-                                            "Name": "minecraft:dirt"
+                                            "Name": "etherealbonds:ethereal_soil"
                                           }
                                         }
                                       ]
@@ -1727,7 +1727,7 @@
                                   "then_run": {
                                     "type": "minecraft:block",
                                     "result_state": {
-                                      "Name": "minecraft:grass_block",
+                                      "Name": "etherealbonds:ethereal_topsoil",
                                       "Properties": {
                                         "snowy": "false"
                                       }
@@ -1737,7 +1737,7 @@
                                 {
                                   "type": "minecraft:block",
                                   "result_state": {
-                                    "Name": "minecraft:dirt"
+                                    "Name": "etherealbonds:ethereal_soil"
                                   }
                                 }
                               ]
@@ -1995,7 +1995,7 @@
                                   {
                                     "type": "minecraft:block",
                                     "result_state": {
-                                      "Name": "minecraft:dirt"
+                                      "Name": "etherealbonds:ethereal_soil"
                                     }
                                   }
                                 ]
@@ -2307,7 +2307,7 @@
                                     "then_run": {
                                       "type": "minecraft:block",
                                       "result_state": {
-                                        "Name": "minecraft:dirt"
+                                        "Name": "etherealbonds:ethereal_soil"
                                       }
                                     }
                                   },
@@ -2359,7 +2359,7 @@
                             {
                               "type": "minecraft:block",
                               "result_state": {
-                                "Name": "minecraft:dirt"
+                                "Name": "etherealbonds:ethereal_soil"
                               }
                             }
                           ]
@@ -2518,35 +2518,41 @@
                 }
               ]
             }
-          },
-          {
-            "type": "minecraft:condition",
-            "if_true": {
-              "type": "minecraft:vertical_gradient",
-              "false_at_and_above": {
-                "absolute": 8
-              },
-              "random_name": "minecraft:deepslate",
-              "true_at_and_below": {
-                "absolute": 0
-              }
-            },
-            "then_run": {
-              "type": "minecraft:block",
-              "result_state": {
-                "Name": "minecraft:deepslate",
-                "Properties": {
-                  "axis": "y"
-                }
-              }
-            }
           }
         ]
       }
     },
     "biome_source": {
       "type": "multi_noise",
-      "preset": "overworld"
+      "biomes": [
+        {
+          "biome": "etherealbonds:ethereal_plains",
+          "parameters": {
+            "continentalness": [
+              0.2,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              0.6,
+              1.0
+            ],
+            "humidity": [
+              0.3,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              0.26,
+              1.0
+            ],
+            "weirdness": [
+              0.36,
+              1.0
+            ]
+          }
+        }
+      ]
     }
   }
 }

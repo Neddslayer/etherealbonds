@@ -1,5 +1,6 @@
 package dev.neddslayer.etherealbonds.init;
 
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -19,6 +20,9 @@ public interface EtherealBondsItemRegistry {
     Map<Identifier, Item> ITEMS = new LinkedHashMap<>();
 
     Item CRYSTALLIZED_ETHEREAL_ENERGY = register("crystallized_ethereal_energy", new Item(new QuiltItemSettings().rarity(Rarity.RARE)));
+    Item ETHEREAL_SOIL = register("ethereal_soil", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_SOIL, new QuiltItemSettings()));
+    Item ETHEREAL_TOPSOIL = register("ethereal_topsoil", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_TOPSOIL, new QuiltItemSettings()));
+    Item ETHEREAL_STONE = register("ethereal_stone", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_STONE, new QuiltItemSettings()));
 
 
     static <T extends Item> T register(String id, T item) {
@@ -30,6 +34,6 @@ public interface EtherealBondsItemRegistry {
         LOGGER.info("Registering items...");
         ITEMS.forEach(
             (id, item) -> Registry.register(Registries.ITEM, id, item));
-        LOGGER.info("Item registry completed!");
+        LOGGER.info("Item registration complete!");
     }
 }

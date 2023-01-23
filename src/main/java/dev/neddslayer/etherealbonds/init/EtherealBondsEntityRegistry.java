@@ -23,7 +23,7 @@ public class EtherealBondsEntityRegistry {
     public static EntityType<WaspEntity> WASP;
 
     public static void init() {
-        LOGGER.info("Beginning entity registration...");
+        LOGGER.info("Registering entities...");
         ETHEREAL_PORTAL = Registry.register(Registries.ENTITY_TYPE,
             new Identifier(MODID, "ethereal_portal"),
             QuiltEntityTypeBuilder.create(SpawnGroup.MISC, EtherealPortalEntity::new)
