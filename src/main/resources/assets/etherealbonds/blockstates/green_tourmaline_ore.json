@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "etherealbonds:block/green_tourmaline_ore"
+      },
+      {
+        "model": "etherealbonds:block/green_tourmaline_ore",
+        "y": 90
+      },
+      {
+        "model": "etherealbonds:block/green_tourmaline_ore",
+        "y": 180
+      },
+      {
+        "model": "etherealbonds:block/green_tourmaline_ore",
+        "y": 270
+      }
+
+    ]
+  }
+}

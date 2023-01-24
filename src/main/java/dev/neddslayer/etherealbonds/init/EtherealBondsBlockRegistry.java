@@ -1,9 +1,6 @@
 package dev.neddslayer.etherealbonds.init;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -23,6 +20,7 @@ public interface EtherealBondsBlockRegistry {
     Block ETHEREAL_SOIL = register("ethereal_soil", new Block(AbstractBlock.Settings.of(Material.SOIL, MapColor.PURPLE).strength(0.75f).sounds(BlockSoundGroup.GRAVEL)));
     Block ETHEREAL_TOPSOIL = register("ethereal_topsoil", new Block(AbstractBlock.Settings.of(Material.SOIL, MapColor.PURPLE).strength(0.85f).sounds(BlockSoundGroup.GRAVEL)));
     Block ETHEREAL_STONE = register("ethereal_stone", new Block(AbstractBlock.Settings.of(Material.STONE, MapColor.PURPLE).strength(1.5f).sounds(BlockSoundGroup.STONE)));
+    Block GREEN_TOURMALINE_ORE = register("green_tourmaline_ore", new ExperienceDroppingBlock(AbstractBlock.Settings.of(Material.STONE, MapColor.GREEN).strength(3).requiresTool().sounds(BlockSoundGroup.STONE)));
 
     static <T extends Block> T register(String id, T block) {
         BLOCKS.put(new Identifier(MODID, id), block);

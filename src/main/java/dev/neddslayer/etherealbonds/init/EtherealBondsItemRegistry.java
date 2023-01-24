@@ -23,6 +23,7 @@ public interface EtherealBondsItemRegistry {
     Item ETHEREAL_SOIL = register("ethereal_soil", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_SOIL, new QuiltItemSettings()));
     Item ETHEREAL_TOPSOIL = register("ethereal_topsoil", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_TOPSOIL, new QuiltItemSettings()));
     Item ETHEREAL_STONE = register("ethereal_stone", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_STONE, new QuiltItemSettings()));
+    Item GREEN_TOURMALINE_ORE = register("green_tourmaline_ore", new BlockItem(EtherealBondsBlockRegistry.GREEN_TOURMALINE_ORE, new QuiltItemSettings()));
 
 
     static <T extends Item> T register(String id, T item) {
