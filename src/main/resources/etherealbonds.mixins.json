@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "DimensionVisualEffectsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

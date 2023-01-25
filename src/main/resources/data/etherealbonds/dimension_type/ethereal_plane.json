@@ -1,6 +1,7 @@
 {
   "natural": false,
-  "has_skylight": true,
+  "has_skylight": false,
+  "effects": "etherealbonds:ethereal_plane",
   "fixed_time": 0,
   "piglin_safe": false,
   "bed_works": false,

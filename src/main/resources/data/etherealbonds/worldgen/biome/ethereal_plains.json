@@ -14,7 +14,7 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "sky_color": 7907327,
+    "sky_color": 9699539,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
@@ -26,7 +26,8 @@
     [],
     [],
     [
-      "etherealbonds:ore_ethereal_soil"
+      "etherealbonds:ore_ethereal_soil",
+      "etherealbonds:ore_green_tourmaline"
     ],
     [],
     [],
@@ -80,7 +81,7 @@
         "type": "etherealbonds:stranded_traveler",
         "maxCount": 6,
         "minCount": 1,
-        "weight": 2
+        "weight": 0.2
       }
     ],
     "misc": [],
@@ -89,12 +90,12 @@
         "type": "etherealbonds:stranded_traveler",
         "maxCount": 6,
         "minCount": 1,
-        "weight": 1
+        "weight": 0.1
       }
     ],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 1
+  "temperature": 0.5
 }
