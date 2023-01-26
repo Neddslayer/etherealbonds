@@ -1,9 +1,6 @@
 package dev.neddslayer.etherealbonds;
 
-import dev.neddslayer.etherealbonds.init.EtherealBondsBlockRegistry;
-import dev.neddslayer.etherealbonds.init.EtherealBondsEntityRegistry;
-import dev.neddslayer.etherealbonds.init.EtherealBondsItemRegistry;
-import dev.neddslayer.etherealbonds.init.EtherealBondsWorldRegistry;
+import dev.neddslayer.etherealbonds.init.*;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
@@ -31,6 +28,7 @@ public class EtherealBonds implements ModInitializer {
         EtherealBondsBlockRegistry.init();
         EtherealBondsItemRegistry.init();
         EtherealBondsEntityRegistry.init();
+        EtherealBondsParticleRegistry.init();
         EtherealBondsWorldRegistry.init();
 
         ServerLifecycleEvents.READY.register(server -> {
