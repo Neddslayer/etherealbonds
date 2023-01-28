@@ -189,7 +189,8 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
                 this.entity.lookAtEntity(livingentity, 30.0F, 30.0F);
                 final Box aabb2 = new Box(this.entity.getBlockPos()).expand(2D);
                 if (inLineOfSight) {
-                    this.entity.getNavigation().startMovingTo(livingentity, this.speed);
+                    Path pathToEntity = this.entity.getNavigation().findPathTo(livingentity.getX(), livingentity.getY() + livingentity.getHeight() / 2, livingentity.getZ(), 1);
+                    this.entity.getNavigation().startMovingAlong(pathToEntity, this.speed);
                     if (this.attackTime == 1) {
                         if (this.entity.squaredDistanceTo(livingentity) <= 0.5){
                             this.entity.setState(1);
@@ -222,7 +223,7 @@ public class WaspEntity extends HostileEntity implements GeoEntity, Flutterer {
 
 
         protected double getSquaredMaxAttackDistance(LivingEntity entity) {
-            return (double)(this.entity.getWidth() * 3.0F * this.entity.getWidth() * 3.0F + entity.getWidth());
+            return (double)(this.entity.getWidth() * 3.5F * this.entity.getWidth() * 3.5F + entity.getWidth());
         }
     }
     class WaspWanderGoal extends Goal {
