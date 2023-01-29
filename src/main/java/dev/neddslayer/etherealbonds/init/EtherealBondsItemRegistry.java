@@ -20,6 +20,7 @@ public interface EtherealBondsItemRegistry {
     Map<Identifier, Item> ITEMS = new LinkedHashMap<>();
 
     Item CRYSTALLIZED_ETHEREAL_ENERGY = register("crystallized_ethereal_energy", new Item(new QuiltItemSettings().rarity(Rarity.RARE)));
+    Item GREEN_TOURMALINE = register("green_tourmaline", new Item(new QuiltItemSettings()));
     Item ETHEREAL_SOIL = register("ethereal_soil", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_SOIL, new QuiltItemSettings()));
     Item ETHEREAL_TOPSOIL = register("ethereal_topsoil", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_TOPSOIL, new QuiltItemSettings()));
     Item ETHEREAL_STONE = register("ethereal_stone", new BlockItem(EtherealBondsBlockRegistry.ETHEREAL_STONE, new QuiltItemSettings()));
