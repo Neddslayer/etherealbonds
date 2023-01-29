@@ -50,12 +50,11 @@
         "type": "etherealbonds:stranded_traveler",
         "maxCount": 6,
         "minCount": 1,
-        "weight": 2
+        "weight": 1
       }
     ],
     "misc": [],
-    "monster": [
-    ],
+    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
