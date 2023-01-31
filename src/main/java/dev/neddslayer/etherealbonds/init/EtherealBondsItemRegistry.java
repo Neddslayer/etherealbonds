@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.LinkedHashMap;
@@ -33,9 +34,9 @@ public interface EtherealBondsItemRegistry {
     }
 
     static void init() {
-        LOGGER.info("Registering items...");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Registering items...");
         ITEMS.forEach(
             (id, item) -> Registry.register(Registries.ITEM, id, item));
-        LOGGER.info("Item registration complete!");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Item registration complete!");
     }
 }

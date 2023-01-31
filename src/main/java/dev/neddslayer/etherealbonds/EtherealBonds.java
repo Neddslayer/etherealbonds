@@ -1,7 +1,6 @@
 package dev.neddslayer.etherealbonds;
 
 import dev.neddslayer.etherealbonds.init.*;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
@@ -16,7 +15,6 @@ import org.quiltmc.qsl.lifecycle.api.event.ServerLifecycleEvents;
 import org.quiltmc.qsl.worldgen.dimension.api.QuiltDimensions;
 
 import static net.minecraft.entity.EntityType.COW;
-import static net.minecraft.entity.EntityType.PLAYER;
 
 public class EtherealBonds implements ModInitializer {
 
@@ -25,6 +23,7 @@ public class EtherealBonds implements ModInitializer {
 
     @Override
     public void onInitialize(ModContainer mod) {
+        LOGGER.info("Registering Ethereal Bonds!");
         EtherealBondsBlockRegistry.init();
         EtherealBondsItemRegistry.init();
         EtherealBondsEntityRegistry.init();
@@ -59,5 +58,6 @@ public class EtherealBonds implements ModInitializer {
                     throw new AssertionError("Target Position not reached.");
             }
         });
+        LOGGER.info("Ethereal Bonds Registered!");
     }
 }

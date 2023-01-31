@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 
 import java.util.LinkedHashMap;
@@ -29,10 +30,10 @@ public interface EtherealBondsBlockRegistry {
     }
 
     static void init() {
-        LOGGER.info("Registering blocks...");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Registering blocks...");
         BLOCKS.forEach(
             (id, item) -> Registry.register(Registries.BLOCK, id, item));
-        LOGGER.info("Block registration complete!");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Block registration complete!");
     }
 
 }

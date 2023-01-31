@@ -11,6 +11,7 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
 import static dev.neddslayer.etherealbonds.EtherealBonds.LOGGER;
@@ -23,7 +24,7 @@ public class EtherealBondsEntityRegistry {
     public static EntityType<WaspEntity> WASP;
 
     public static void init() {
-        LOGGER.info("Registering entities...");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Registering entities...");
         ETHEREAL_PORTAL = Registry.register(Registries.ENTITY_TYPE,
             new Identifier(MODID, "ethereal_portal"),
             QuiltEntityTypeBuilder.create(SpawnGroup.MISC, EtherealPortalEntity::new)
@@ -41,7 +42,7 @@ public class EtherealBondsEntityRegistry {
                 .build());
         FabricDefaultAttributeRegistry.register(STRANDED_TRAVELER, StrandedTravelerEntity.createHostileAttributes());
         FabricDefaultAttributeRegistry.register(WASP, WaspEntity.createWaspAttributes());
-        LOGGER.info("Entity registration complete!");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Entity registration complete!");
     }
 
 }

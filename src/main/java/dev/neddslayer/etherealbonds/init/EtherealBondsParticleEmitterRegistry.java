@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,9 +32,9 @@ public interface EtherealBondsParticleEmitterRegistry {
     }
 
     static void init() {
-        LOGGER.info("Registering particle emitters...");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Registering particle emitters...");
         PARTICLE_EMITTERS.forEach((id, pair) -> Registry.register(EtherealBondsParticleEmitterRegistry.PARTICLE_EMITTER, id, pair));
-        LOGGER.info("Particle emitter registration complete!");
+        if (QuiltLoader.isDevelopmentEnvironment()) LOGGER.info("Particle emitter registration complete!");
     }
 
 }
